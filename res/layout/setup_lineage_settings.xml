@@ -102,8 +102,6 @@
                         android:text="@string/services_os_privacy_guard"/>
 
                 </LinearLayout>
-
-            </LinearLayout>
         </ScrollView>
     </FrameLayout>
 
