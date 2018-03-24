@@ -100,7 +100,6 @@ public class LineageSettingsActivity extends BaseSetupWizardActivity {
         setNextText(R.string.next);
         String privacy_policy = getString(R.string.services_privacy_policy);
         String policySummary = getString(R.string.services_explanation, privacy_policy);
-        SpannableString ss = new SpannableString(policySummary);
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
@@ -115,25 +114,6 @@ public class LineageSettingsActivity extends BaseSetupWizardActivity {
                 }
             }
         };
-        ss.setSpan(clickableSpan,
-                policySummary.length() - privacy_policy.length() - 1,
-                policySummary.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        TextView privacyPolicy = (TextView) findViewById(R.id.privacy_policy);
-        privacyPolicy.setMovementMethod(LinkMovementMethod.getInstance());
-        privacyPolicy.setText(ss);
-
-        mMetricsRow = findViewById(R.id.metrics);
-        mMetricsRow.setOnClickListener(mMetricsClickListener);
-        String metricsHelpImproveCM =
-                getString(R.string.services_help_improve_cm, getString(R.string.os_name));
-        String metricsSummary = getString(R.string.services_metrics_label,
-                metricsHelpImproveCM, getString(R.string.os_name));
-        final SpannableStringBuilder metricsSpan = new SpannableStringBuilder(metricsSummary);
-        metricsSpan.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
-                0, metricsHelpImproveCM.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        TextView metrics = (TextView) findViewById(R.id.enable_metrics_summary);
-        metrics.setText(metricsSpan);
-        mMetrics = (CheckBox) findViewById(R.id.enable_metrics_checkbox);
 
         mNavKeysRow = findViewById(R.id.nav_keys);
         mNavKeysRow.setOnClickListener(mNavKeysClickListener);
@@ -163,7 +143,6 @@ public class LineageSettingsActivity extends BaseSetupWizardActivity {
     public void onResume() {
         super.onResume();
         updateDisableNavkeysOption();
-        updateMetricsOption();
         updatePrivacyGuardOption();
     }
 
@@ -196,15 +175,6 @@ public class LineageSettingsActivity extends BaseSetupWizardActivity {
     @Override
     protected int getIconResId() {
         return R.drawable.ic_features;
-    }
-
-    private void updateMetricsOption() {
-        final Bundle myPageBundle = mSetupWizardApp.getSettingsBundle();
-        boolean metricsChecked =
-                !myPageBundle.containsKey(KEY_SEND_METRICS) || myPageBundle
-                        .getBoolean(KEY_SEND_METRICS);
-        mMetrics.setChecked(metricsChecked);
-        myPageBundle.putBoolean(KEY_SEND_METRICS, metricsChecked);
     }
 
     private void updateDisableNavkeysOption() {
